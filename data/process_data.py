@@ -21,6 +21,10 @@ def clean_data(df):
     Parameters:
     df - Pandas dataframe to be cleaned
     """
+
+    # Replace any categorisation that have been marked as 2 with 1. 
+    df['categories'] = df['categories'].str.replace('-2', '-1')
+
     # Create columns for each category and name them appropriately
     categories = df['categories'].str.split(';', expand=True)
     row = categories.iloc[0]
