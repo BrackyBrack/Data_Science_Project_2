@@ -3,11 +3,24 @@ import pandas as pd
 from sqlalchemy import create_engine
 
 def load_data(messages_filepath, categories_filepath):
+    """
+    Reads data from 2 csv files and returns a merged Pandas Dataframe using 'id' columns in both csv's
+
+    Parameters:
+    messages_filepath -- filepath of a csv containing messages
+    categories_filepath -- filepath of a csv containing categories of the messages from messages_filepath
+    """
     messages = pd.read_csv(messages_filepath)
     categories = pd.read_csv(categories_filepath)
     return messages.merge(categories, how='outer', on='id')
 
 def clean_data(df):
+    """
+    Splits the categories column into individual appropriately names columns
+
+    Parameters:
+    df - Pandas dataframe to be cleaned
+    """
     # Create columns for each category and name them appropriately
     categories = df['categories'].str.split(';', expand=True)
     row = categories.iloc[0]
@@ -30,11 +43,22 @@ def clean_data(df):
 
 
 def save_data(df, database_filename):
+    """
+    Saves a pandas dataframe to CategorisedMessages table on a SQLite database
+
+    Parameters:
+    df -- Pandas dataframe to be saved
+    database_filename -- name of database file to be created
+    """
     engine = create_engine('sqlite:///{}'.format(database_filename))
     df.to_sql('CategorisedMessages', engine, index=False, if_exists='replace')  
 
 
 def main():
+    """
+    main function. Reads data from a CSV, cleans the data and stores to an SQLite database. Takes filepaths for 2 csv files and
+    a database name as args
+    """
     if len(sys.argv) == 4:
 
         messages_filepath, categories_filepath, database_filepath = sys.argv[1:]
