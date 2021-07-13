@@ -18,7 +18,14 @@ from sklearn.metrics import classification_report
 
 
 def load_data(database_filepath):
-    engine = create_engine('sqlite:///../data/DisasterResponse.db')
+    """
+    Loads data from CategorisedMessages table on specified database into X and Y datasets, also provised a list of column names for 
+    the Y dataset.
+
+    Parameters:
+    database_filepath -- name of of SQLite database, including .db suffix. Database must be in 'data' folder of parent directory
+    """
+    engine = create_engine('sqlite:///../data/{}}'.format(database_filepath))
     df = pd.read_sql('SELECT * FROM CategorisedMessages', engine)
 
     X = df.message.values
@@ -28,6 +35,12 @@ def load_data(database_filepath):
     return X, Y, category_names
 
 def tokenize(text):
+    """
+    Normalizes, Tokenizes and lematizes a string
+
+    Parameters:
+    text -- string to be processed
+    """
     lemmatizer = WordNetLemmatizer()
     result = []
     
@@ -41,6 +54,9 @@ def tokenize(text):
 
 
 def build_model():
+    """
+    Builds Model
+    """
     pipeline = Pipeline([
     ('vect', CountVectorizer(tokenizer=tokenize)),
     ('tfidf', TfidfTransformer()),
@@ -58,6 +74,15 @@ def build_model():
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
+    """
+    Evaluates a model, and prints to the console the Precision, Recall, F1-Score and Support"
+
+    Parameters:
+    model -- the model to be evaluated
+    X_test -- test data
+    Y_test -- actual results of the test data
+    category_names -- list type of category names for MultiOutputClassifier models.
+    """
     y_pred = model.predict(X_test)
     for i in range(len(category_names)):
         report = classification_report(Y_test[:,i],y_pred[:,i])
@@ -65,11 +90,23 @@ def evaluate_model(model, X_test, Y_test, category_names):
 
 
 def save_model(model, model_filepath):
+    """
+    Saves model as a pickle file
+
+    parameters:
+    model -- the model to be saved
+    model_filepath -- filepath where the model should be saved
+    """
     with open(model_filepath, 'wb') as file:
         pickle.dump(model, file)
 
 
 def main():
+    """
+    Main function that reads in data, builds and trains a model. Evaluates the model and prints results to
+    terminal, then saves the model. Takes the database name to read data from and the filename to save the 
+    model to as args.
+    """
     if len(sys.argv) == 3:
         database_filepath, model_filepath = sys.argv[1:]
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
