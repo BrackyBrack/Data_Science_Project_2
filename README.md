@@ -10,7 +10,7 @@ the type of disaster the message refers to, and also if aid is required.
   - 2 csv files containing messages and classification data used for training the model.
   - 1 .py file for reading the data, cleaning the data and saving the data to a local database
 
--models/
+- models/
   - 1 .py file which reads data from previously created database, trains a model on the data and saves the model to a file.
 
 - app/
@@ -21,13 +21,14 @@ the type of disaster the message refers to, and also if aid is required.
 ### Running the App
 - Clone repository to your local machine
 - Navigate to data folder and run process_data.py passing in 3 args, csv containing disaster message, csv containing categories of those messages, filename of the database
-'python .\process_data.py disaster_messages.csv disaster_categories.csv DisasterResponse.db'
+
+`python .\process_data.py disaster_messages.csv disaster_categories.csv DisasterResponse.db`
 - Navigate to models folder and run train_classifier.py passing in 2 args, previously created DisasterResponse database, filename to save the model to (must end .pkl)
 
-'python train_classifier.py DisasterResponse.db classifier.pkl'
+`python train_classifier.py DisasterResponse.db classifier.pkl`
 - Navigate to app folder and run run.py, no args are needed, but it will look for a database in data folder called DisasterResponse.db and a model in models folder called classifier.pkl
  
-'python run.py'
+`python run.py`
 - If any problems are encountered ensure that you are running each .py file from it's own directory, not from a parent directory.
  
 
