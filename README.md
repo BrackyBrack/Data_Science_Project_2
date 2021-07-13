@@ -16,7 +16,7 @@ the type of disaster the message refers to, and also if aid is required.
 - app/
   - 1 .py file which creates visualisations for web page, and starts the web page using a Flask backend
   - templates/
-    - 2 html files 
+    - 2 html files for rendering web pages
     
 ### Running the App
 - Clone repository to your local machine
