@@ -25,7 +25,7 @@ def load_data(database_filepath):
     Parameters:
     database_filepath -- name of of SQLite database, including .db suffix. Database must be in 'data' folder of parent directory
     """
-    engine = create_engine('sqlite:///../data/{}}'.format(database_filepath))
+    engine = create_engine('sqlite:///../data/{}'.format(database_filepath))
     df = pd.read_sql('SELECT * FROM CategorisedMessages', engine)
 
     X = df.message.values
